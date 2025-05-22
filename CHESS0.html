@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chess Idle Game Prototype</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="chess0.css" rel="stylesheet">
+</head>
+<body>
+  <div class="container py-4">
+    <h2 class="text-center mb-4">♟️ Chess Idle Game Prototype</h2>
+    <div class="row mb-3 align-items-start flex-md-row flex-column">
+      <div class="col-md-4" style="width: 33%;">
+        <!-- Chessboard Visual -->
+        <div class="chess-board mb-2 position-relative" id="chessBoard"></div>
+        
+        <div id="relicMsg" class="mt-2 relic text-center"></div>
+      </div>
+      <!-- Four main action buttons as a column -->
+      <div class="d-flex flex-column align-items-stretch gap-2 mb-2" style="width: 33%;">
+        <button id="moveBtn" class="btn btn-primary btn-sm" style="margin-top: 20%;">Make a Move (+1)</button>
+        <button id="click10xBtn" class="btn btn-success btn-sm">Get Click 10x</button>
+        <button id="relicBtn" class="btn btn-warning btn-sm">Collect Relic</button>
+        <button id="cheatBtn" class="btn btn-danger btn-sm">Cheat (Speed Up)</button>
+      </div>
+      <div class="col-md-5" style="width: 33%;">
+        <div id="displayStats"></div>
+      </div>
+    </div>
+    <!-- Resource Bar -->
+    <div class="resource-bar mb-2">
+      <span>Chess Points: <span id="points">0</span></span>
+      <span>Income/sec: <span id="income">1</span></span>
+    </div>
+    <!-- Remove the now-redundant card with the four buttons below -->
+    <div class="card mb-3">
+      <div class="card-body text-center">
+      </div>
+    </div>
+
+    <!-- Upgrades Card with Shop Trigger -->
+    <div class="card mb-3">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        Pieces
+      </div>
+      <div class="card-body" id="upgradeListContainer">
+        <div id="upgradeList"></div>
+        <div class="d-flex align-items-center mb-2 flex-wrap">
+          <button id="pawnBtn" class="btn btn-outline-secondary flex-grow-1 me-1 mb-1">
+            ♙ Buy Pawn (+1) - 50 pts
+          </button>
+          <button id="pawnBtn5" class="btn btn-outline-success btn-sm me-1 mb-1" title="Buy 5 Pawns"><span>5x</span> <span>♙</span></button>
+          <button id="pawnBtn25" class="btn btn-outline-success btn-sm me-1 mb-1" title="Buy 25 Pawns"><span>25x</span> <span>♙</span></button>
+          <button id="pawnBtnMax" class="btn btn-outline-success btn-sm mb-1" title="Buy Max Pawns"><span>∞</span> <span>♙</span></button>
+        </div>
+        <div class="d-flex align-items-center mb-2 flex-wrap">
+          <button id="knightBtn" class="btn btn-outline-secondary flex-grow-1 me-1 mb-1">
+            ♘ Buy Knight (+5/sec) - 250 pts
+          </button>
+          <button id="knightBtn5" class="btn btn-outline-success btn-sm me-1 mb-1" title="Buy 5 Knights"><span>5x</span> <span>♘</span></button>
+          <button id="knightBtn25" class="btn btn-outline-success btn-sm me-1 mb-1" title="Buy 25 Knights"><span>25x</span> <span>♘</span></button>
+          <button id="knightBtnMax" class="btn btn-outline-success btn-sm mb-1" title="Buy Max Knights"><span>∞</span> <span>♘</span></button>
+        </div>
+        <div class="d-flex align-items-center mb-2 flex-wrap">
+          <button id="bishopBtn" class="btn btn-outline-secondary flex-grow-1 me-1 mb-1">
+            ♗ Buy Bishop (+15/sec) - 1,000 pts
+          </button>
+          <button id="bishopBtn5" class="btn btn-outline-success btn-sm me-1 mb-1" title="Buy 5 Bishops"><span>5x</span> <span>♗</span></button>
+          <button id="bishopBtn25" class="btn btn-outline-success btn-sm me-1 mb-1" title="Buy 25 Bishops"><span>25x</span> <span>♗</span></button>
+          <button id="bishopBtnMax" class="btn btn-outline-success btn-sm mb-1" title="Buy Max Bishops"><span>∞</span> <span>♗</span></button>
+        </div>
+        <div class="d-flex align-items-center mb-2 flex-wrap">
+          <button id="rookBtn" class="btn btn-outline-secondary flex-grow-1 me-1 mb-1">
+            ♖ Buy Rook (+50/sec) - 5,000 pts
+          </button>
+          <button id="rookBtn5" class="btn btn-outline-success btn-sm me-1 mb-1" title="Buy 5 Rooks"><span>5x</span> <span>♖</span></button>
+          <button id="rookBtn25" class="btn btn-outline-success btn-sm me-1 mb-1" title="Buy 25 Rooks"><span>25x</span> <span>♖</span></button>
+          <button id="rookBtnMax" class="btn btn-outline-success btn-sm mb-1" title="Buy Max Rooks"><span>∞</span> <span>♖</span></button>
+        </div>
+        <div class="d-flex align-items-center mb-2 flex-wrap">
+          <button id="queenBtn" class="btn btn-outline-secondary flex-grow-1 me-1 mb-1">
+            ♕ Buy Queen (+200/sec) - 20,000 pts
+          </button>
+          <button id="queenBtn5" class="btn btn-outline-success btn-sm me-1 mb-1" title="Buy 5 Queens"><span>5x</span> <span>♕</span></button>
+          <button id="queenBtn25" class="btn btn-outline-success btn-sm me-1 mb-1" title="Buy 25 Queens"><span>25x</span> <span>♕</span></button>
+          <button id="queenBtnMax" class="btn btn-outline-success btn-sm mb-1" title="Buy Max Queens"><span>∞</span> <span>♕</span></button>
+        </div>
+        <div class="d-flex align-items-center mb-2 flex-wrap">
+          <button id="kingBtn" class="btn btn-outline-secondary flex-grow-1 me-1 mb-1">
+            ♔ Buy King (+1000/sec) - 100,000 pts
+          </button>
+          <button id="kingBtn5" class="btn btn-outline-success btn-sm me-1 mb-1" title="Buy 5 Kings"><span>5x</span> <span>♔</span></button>
+          <button id="kingBtn25" class="btn btn-outline-success btn-sm me-1 mb-1" title="Buy 25 Kings"><span>25x</span> <span>♔</span></button>
+          <button id="kingBtnMax" class="btn btn-outline-success btn-sm mb-1" title="Buy Max Kings"><span>∞</span> <span>♔</span></button>
+        </div>
+        <div class="d-flex align-items-center mb-2 flex-wrap">
+          <button id="grandmasterBtn" class="btn btn-outline-secondary flex-grow-1 me-1 mb-1">
+            GM Buy Grandmaster (+5000/sec) - 500,000 pts
+          </button>
+          <button id="grandmasterBtn5" class="btn btn-outline-success btn-sm me-1 mb-1" title="Buy 5 Grandmasters"><span>5x</span> <span>GM</span></button>
+          <button id="grandmasterBtn25" class="btn btn-outline-success btn-sm me-1 mb-1" title="Buy 25 Grandmasters"><span>25x</span> <span>GM</span></button>
+          <button id="grandmasterBtnMax" class="btn btn-outline-success btn-sm mb-1" title="Buy Max Grandmasters"><span>∞</span> <span>GM</span></button>
+        </div>
+        <div class="d-flex align-items-center mb-2 flex-wrap">
+          <button id="aiBtn" class="btn btn-outline-secondary flex-grow-1 me-1 mb-1">
+            🤖 Buy AI Engine (+20000/sec) - 2,000,000 pts
+          </button>
+          <button id="aiBtn5" class="btn btn-outline-success btn-sm me-1 mb-1" title="Buy 5 AI Engines"><span>5x</span> <span>🤖</span></button>
+          <button id="aiBtn25" class="btn btn-outline-success btn-sm me-1 mb-1" title="Buy 25 AI Engines"><span>25x</span> <span>🤖</span></button>
+          <button id="aiBtnMax" class="btn btn-outline-success btn-sm mb-1" title="Buy Max AI Engines"><span>∞</span> <span>🤖</span></button>
+        </div>
+        <div class="d-flex align-items-center mb-2 flex-wrap">
+          <button id="godBtn" class="btn btn-outline-secondary flex-grow-1 me-1 mb-1">
+            👑 Buy Chess God (+100000/sec) - 10,000,000 pts
+          </button>
+          <button id="godBtn5" class="btn btn-outline-success btn-sm me-1 mb-1" title="Buy 5 Chess Gods"><span>5x</span> <span>👑</span></button>
+          <button id="godBtn25" class="btn btn-outline-success btn-sm me-1 mb-1" title="Buy 25 Chess Gods"><span>25x</span> <span>👑</span></button>
+          <button id="godBtnMax" class="btn btn-outline-success btn-sm mb-1" title="Buy Max Chess Gods"><span>∞</span> <span>👑</span></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Achievement Card -->
+    <div class="card">
+      <div class="card-header">Achievements</div>
+      <div class="card-body">
+        <div id="achievements">
+          <span id="achv100" class="achievement d-none">🏆 100 Chess Points!</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="chess0.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

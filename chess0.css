@@ -1,0 +1,178 @@
+body { background: #f8f9fa; }
+.container { max-width: 950px; }
+.chess-board {
+    display: grid;
+    grid-template-columns: repeat(8, 32px);
+    grid-template-rows: repeat(8, 32px);
+    gap: 1px;
+    margin: 0;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    min-width: 260px;
+    position: relative;
+}
+
+/* Action buttons group to the right of the chess board */
+.chess-actions-side {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    position: absolute;
+    top: 0;
+    left: 100%;
+    margin-left: 18px;
+    height: 100%;
+    justify-content: center;
+    z-index: 10;
+    background: none;
+    pointer-events: auto;
+}
+.chess-actions-side button {
+    min-width: 120px;
+    white-space: nowrap;
+}
+
+/* If buttons are inside the chess-board, make sure they are always on top */
+.chess-board .chess-actions-side,
+.chess-board .position-absolute {
+    z-index: 100;
+    pointer-events: auto;
+}
+
+/* Responsive: stack below board on small screens */
+@media (max-width: 600px) {
+    .chess-board {
+        margin-bottom: 50px;
+    }
+    .chess-actions-side,
+    .chess-board .position-absolute {
+        position: static !important;
+        flex-direction: row;
+        margin-left: 0;
+        margin-top: 10px;
+        width: 100%;
+        justify-content: flex-start;
+        gap: 8px;
+        z-index: 100;
+    }
+}
+
+/* Responsive: stack chessboard, buttons, and stats vertically on small screens */
+@media (max-width: 768px) {
+  .row.mb-3.align-items-start.flex-md-row.flex-column {
+    flex-direction: column !important;
+  }
+  .row.mb-3.align-items-start.flex-md-row.flex-column > [class^="col-"], 
+  .row.mb-3.align-items-start.flex-md-row.flex-column > .d-flex {
+    width: 100% !important;
+    max-width: 100%;
+  }
+  .d-flex.flex-column.align-items-stretch.gap-2.mb-2 {
+    margin-top: 0 !important;
+    margin-bottom: 1rem !important;
+  }
+}
+
+.chess-square {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    transition: background 0.3s, box-shadow 0.3s;
+}
+.chess-square.light { background: #f0d9b5; }
+.chess-square.dark { background: #b58863; }
+.chess-square.fx-move {
+    animation: chessMoveFX 0.5s;
+    box-shadow: 0 0 10px 3px #00e676;
+    z-index: 20;
+}
+.chess-square.fx-buy {
+    animation: chessBuyFX 0.7s;
+    box-shadow: 0 0 10px 3px #ffd600;
+    z-index: 2;
+}
+@keyframes chessMoveFX {
+    0% { background: #e0ffe6; }
+    100% { background: inherit; }
+}
+@keyframes chessBuyFX {
+    0% { background: #fffbe6; }
+    100% { background: inherit; }
+}
+
+#displayStats {
+    margin-bottom: 10px;
+}
+.stats-box {
+    background: #e0f7fa;
+    border: 2px solid #00bcd4;
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 1rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    margin-bottom: 8px;
+    animation: popin 0.3s;
+}
+.stats-box b { color: #007b83; }
+.stats-box span { margin-right: 7px; font-weight: bold; }
+@keyframes popin {
+    0% { transform: scale(0.95); opacity: 0.5; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.resource-bar {
+    background: #fff3cd;
+    border: 1px solid #ffeeba;
+    padding: 6px 10px;
+    margin-bottom: 8px;
+    font-size: 1rem;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.upgrade-btn {
+    background: #007bff;
+    color: #fff;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 3px 0;
+    transition: background 0.2s;
+}
+.upgrade-btn:hover { background: #0056b3; }
+
+#ownedBar { margin-bottom: 7px; }
+
+/* Visual effect for buying */
+.buy-flash { animation: buyFlash 0.7s; }
+@keyframes buyFlash {
+    0%, 50% { background: #fffbe6; }
+    100% { background: #f8f9fa; }
+}
+
+/* Visual effect for move */
+.move-flash { animation: moveFlash 0.2s; }
+@keyframes moveFlash {
+    0% { background: #e0ffe6; }
+    100% { background: #f8f9fa; }
+}
+
+#upgradeListContainer .btn-sm {
+    padding: 2px 8px;
+    font-size: 0.95rem;
+    min-width: 36px;
+}
+#upgradeListContainer .d-flex {
+    margin-bottom: 4px;
+}
+
+/* Hide the blue buy piece buttons at the top of the upgrade list */
+#upgradeList .upgrade-btn:nth-child(-n+9) {
+    display: none !important;
+}
