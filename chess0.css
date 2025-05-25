@@ -107,8 +107,8 @@ body { background: #f8f9fa; }
     margin-bottom: 10px;
 }
 .stats-box {
-    background: #e0f7fa;
-    border: 2px solid #00bcd4;
+    background: #d0fae0; /* was #e0f7fa */
+    border: 2px solid #00c48c; /* was #00bcd4 */
     border-radius: 10px;
     padding: 10px 12px;
     font-size: 1rem;
@@ -116,7 +116,7 @@ body { background: #f8f9fa; }
     margin-bottom: 8px;
     animation: popin 0.3s;
 }
-.stats-box b { color: #007b83; }
+.stats-box b { color: #009e5b; } /* was #007b83 */
 .stats-box span { margin-right: 7px; font-weight: bold; }
 @keyframes popin {
     0% { transform: scale(0.95); opacity: 0.5; }
